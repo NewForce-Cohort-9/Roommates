@@ -88,5 +88,42 @@ namespace Roommates.Repositories
                 }
             }
         }
+        public List<Chore> GetAllUnassigned()
+        {
+
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"Select chore.Id, chore.Name, RoommateChore.ChoreID from Chore
+                                        Left Join RoommateChore on Chore.Id = RoommateChore.ChoreID 
+                                        Where RoommateChore.ChoreID Is Null";
+
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<Chore> chores = new List<Chore>();
+
+                    while (reader.Read())
+                    {
+
+
+                        Chore chore = new Chore
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+
+                        chores.Add(chore);
+                    }
+
+                    reader.Close();
+
+                    return chores;
+                }
+            }
+        }
     }
 }

@@ -71,6 +71,39 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
+                    case ("Search for chore"):
+                        Console.Write("Chore Id: ");
+                        int choreId = int.Parse(Console.ReadLine());
+
+                        Chore chore = choreRepo.GetById(choreId);
+
+                        Console.WriteLine($"{chore.Id} - {chore.Name})");
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
+                    case ("Add a chore"):
+                        Console.Write("Chore name: ");
+                        string choreName = Console.ReadLine();
+                        Chore choreToAdd = new Chore()
+                        {
+                            Name = choreName
+                        };
+
+                        choreRepo.Insert(choreToAdd);
+
+                        Console.WriteLine($"{choreToAdd.Name} has been added and assigned an Id of {choreToAdd.Id}");
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
+                    case ("Show chores to be assigned"):
+                        List<Chore> unassignedChores = choreRepo.GetAllUnassigned();
+                        foreach(Chore c in unassignedChores)
+                        {
+                            Console.WriteLine($"{c.Name} is unassigned");
+                        }
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
                     case ("Search for roommate"):
                         Console.WriteLine("Roommate Id:");
                         int roommateId = int.Parse(Console.ReadLine());
@@ -106,7 +139,7 @@ namespace Roommates
                 "Search for room",
                 "Add a room",
                 "Show all chores",
-                "Search for chores",
+                "Search for chore",
                 "Add a chore",
                 "Show chores to be assigned",
                 "Show all roommates",
