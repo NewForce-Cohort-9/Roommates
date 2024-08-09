@@ -79,6 +79,15 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
+                    case ("Show all roommates"):
+                        List<Roommate> roommates = roommateRepo.GetAll();
+                        foreach (Roommate r in roommates)
+                        {
+                            Console.WriteLine($"{r.FirstName} stays in the {r.Room.Name}. They pay {r.RentPortion}");
+                        }
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
                     case ("Exit"):
                         runProgram = false;
                         break;
@@ -97,6 +106,10 @@ namespace Roommates
                 "Search for room",
                 "Add a room",
                 "Show all chores",
+                "Search for chores",
+                "Add a chore",
+                "Show chores to be assigned",
+                "Show all roommates",
                 "Search for roommate",
                 "Exit"
             };
