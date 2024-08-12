@@ -60,7 +60,8 @@ namespace Roommates.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"Select Id, FirstName, LastName, MoveInDate, RentPortion From Roommate";
+                    cmd.CommandText = @"Select rm.Id, rm.FirstName, rm.LastName, rm.MoveInDate, rm.RentPortion, r.id AS	'Room Id', r.Name, r.MaxOccupancy From Roommate rm 
+                        Join Room r on rm.RoomId = r.Id ";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     List<Roommate> roommates = new List<Roommate>();
@@ -75,7 +76,12 @@ namespace Roommates.Repositories
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
                             RentPortion = reader.GetInt32(reader.GetOrdinal("RentPortion")),
                             MoveInDate = reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
-                            Room = null
+                            Room = new Room
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Room Id")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                MaxOccupancy = reader.GetInt32(reader.GetOrdinal("MaxOccupancy"))
+                            }
                         };
                         roommates.Add(roommate);
                     }

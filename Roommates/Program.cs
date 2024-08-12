@@ -121,6 +121,60 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
+                    case ("Update a room"):
+                        List<Room> roomChoices = roomRepo.GetAll();
+                        foreach (Room r in roomChoices)
+                        {
+                            Console.WriteLine($"{r.Name} has an Id of {r.Id} and a max occupancy of {r.MaxOccupancy}");
+                        }
+                        Console.WriteLine("Which room would like to update?");
+                        int selectedRoomId = int.Parse(Console.ReadLine());
+                        Room selectedRoom = roomChoices.Where(r => r.Id == selectedRoomId).FirstOrDefault();
+                        Console.WriteLine("New Name:");
+                        selectedRoom.Name = Console.ReadLine();
+                        Console.WriteLine("Max Occupancy:");
+                        selectedRoom.MaxOccupancy = int.Parse(Console.ReadLine());
+                        roomRepo.Update(selectedRoom);
+                        Console.WriteLine("Great success. Room updated");
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
+                    case ("Delete a room"):
+                        List<Room> deleteRoom = roomRepo.GetAll();
+                        foreach (Room r in deleteRoom)
+                        {
+                            Console.WriteLine($"{r.Name} has an Id of {r.Id} and a max occupancy of {r.MaxOccupancy}");
+                        }
+                        Console.WriteLine("Which room would like to delete?");
+                        int deleteRoomId = int.Parse(Console.ReadLine());
+                        roomRepo.Delete(deleteRoomId);
+                        Console.WriteLine("Room deleted forever");
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
+                    case ("Add a roommate"):
+                        Console.WriteLine("What is the roommate's first name?");
+                        string firstName = Console.ReadLine();
+                        Console.WriteLine("What is the roommate's last name?");
+                        string lastName = Console.ReadLine();
+                        Console.WriteLine("How much will the roommate's portion be?");
+                        int rentPortion = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Move In Date: (Year-Month-Day)");
+                        DateTime moveInDate = DateTime.Parse(Console.ReadLine());
+                        Console.WriteLine("Room Id for roommate");
+                        int roomId = int.Parse(Console.ReadLine());
+                        Roommate roommateToAdd = new Roommate()
+                        {
+                            FirstName = firstName,
+                            LastName = lastName,
+                            RentPortion = rentPortion,
+                            MoveInDate = moveInDate
+                        };
+                        roommateRepo.Insert(roommateToAdd, roomId);
+                        Console.WriteLine($"{firstName} {lastName} was added and assigned an id of {roommateToAdd.Id}");
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
                     case ("Exit"):
                         runProgram = false;
                         break;
@@ -138,12 +192,15 @@ namespace Roommates
                 "Show all rooms",
                 "Search for room",
                 "Add a room",
+                "Update a room",
+                "Delete a room",
                 "Show all chores",
                 "Search for chore",
                 "Add a chore",
                 "Show chores to be assigned",
                 "Show all roommates",
                 "Search for roommate",
+                "Add a roommate",
                 "Exit"
             };
 
